@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "target": "ES2023",
+        "lib": ["ES2023", "ESNext.Array", "ESNext.Promise"],
+        "moduleResolution": "Node16",
+        "module": "Node16"
+    }
+}

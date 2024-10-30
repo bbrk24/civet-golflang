@@ -1,0 +1,29 @@
+from node:assert import { ok as assert }
+from ./tuple.civet import type Tuple
+
+codepage := Array<string>(256).fill('\ufffd') as! Tuple<string, 256>
+codepage['\n'.charCodeAt 0] = '\n'
+for i of [0x20 ..<= 0x7E]
+    codepage[i] = String.fromCharCode i
+
+highChars := [
+    '≤', '≥', '≠', '≡', '≣', '≔', '⁇', '‖', '≪', '≫', '⋙', '…', '‥', '∈'
+    '∉', '▷', '→', '⇒', '⧺', '—', '÷', 'Σ', 'Π', '∀', '∃', '←', '√', '㏌', 'π'
+]
+assert highChars# <= 0x7F
+
+for each char, i of highChars
+    codepage[i + 0x80] = char
+
+export array := Object.freeze codepage
+export encode := (str: string) =>
+    return = Buffer.alloc str#
+    for each char, i of str
+        index := codepage.indexOf char
+        if index < 0
+            throw new Error `Invalid character ${char}`
+        return.value[i] = index
+export decode := (buf: ArrayLike<number>) =>
+    for each i of buf
+        codepage[i] ?? throw new Error `Out-of-bounds index ${i}`
+    .join ''

@@ -1,0 +1,33 @@
+from @danielx/civet import { compile as civetCompile, type ParseOptions }
+
+translations := new Map [
+    ['Σ', 'for sum']
+    ['Π', 'for product']
+    ['∀', 'for every']
+    ['∃', 'for some']
+    ['←', 'of']
+    ['√', 'Math.sqrt']
+    ['㏌', 'in'],
+    ['π', 'Math.PI']
+]
+
+escapeStr := Array.from .: string, '\\u' + .charCodeAt(0).toString(16).padStart(4, '0')
+    .join ''
+
+regex := new RegExp
+    `((?<=\\p\{ID_Continue}?))(${
+        Array.from translations.keys(), escapeStr
+            .join '|'
+    })((?=\\p\{ID_Continue}?))`
+    'gv'
+
+performTranslations := (code: string) =>
+    code.replaceAll
+        regex
+        (_, before: string?, symbol: string, after: string?) =>
+            (if before? then `${before} ` else '') + translations.get(symbol) + (if after? then ` ${after}` else '')
+
+export default compile := (code: string, parseOptions?: ParseOptions) =>
+    await civetCompile
+        performTranslations code
+        { +js, parseOptions }

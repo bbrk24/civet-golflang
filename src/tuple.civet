@@ -1,0 +1,9 @@
+// Adapted from https://stackoverflow.com/a/50641073/6253337
+UnionToIntersection<U> ::= if (if U < any then (k: U) =>) < ((k: infer I) =>) then I 
+NoUnion<Key> ::=
+    if [Key] < [boolean] then boolean
+    else if [Key] < [UnionToIntersection<Key>] then Key
+
+SpecificNumber<N < number> ::= unless number < N then NoUnion<N>
+
+export default Tuple<T, Length < number> ::= T[] & length: SpecificNumber<Length>
