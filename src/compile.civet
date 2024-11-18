@@ -1,6 +1,6 @@
 from @danielx/civet import { compile as civetCompile, type ParseOptions }
 
-translations := new Map [
+export translations := new Map [
     ['Σ', 'for sum']
     ['Π', 'for product']
     ['∀', 'for every']

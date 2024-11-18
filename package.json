@@ -1,7 +1,7 @@
 {
   "version": "0.0.1",
   "dependencies": {
-    "@danielx/civet": ">=0.8.10",
+    "@danielx/civet": ">=0.8.12",
     "yargs": "^17.7.2"
   },
   "devDependencies": {

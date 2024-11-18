@@ -4,11 +4,12 @@ from ./codepage.civet import { encode, decode }
 compile from ./compile.civet
 
 argv := await yargs process.argv[2...]
-    .positional 'filename',
+    .positional('filename',
         type: 'string'
         normalize: true
         describe: 'input file'
-    .options
+    )
+    .options(
         encoding:
             alias: 'e'
             choices: ['utf-8', 'utf-16le', 'sbcs'] as const
@@ -22,6 +23,7 @@ argv := await yargs process.argv[2...]
         encode:
             type: 'boolean'
             describe: 'Instead of compiling, re-encode into sbcs'
+    )
     .argv
 
 input :=
